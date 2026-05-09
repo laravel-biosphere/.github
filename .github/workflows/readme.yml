@@ -1,0 +1,25 @@
+name: Copy profile README to repository README
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "profile/README.md"
+
+jobs:
+  copy:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout the repository
+        id: checkout
+        uses: actions/checkout@v6
+      - name: Copy profile README to repository README
+        id: copy
+        run: |
+          cp ./profile/README.md ./README.md
+      - name: Push changes
+        id: push
+        run: |
+          git add ./README.md
+          git commit -m "docs: sync repo readme w/profile readme"
+          git push
