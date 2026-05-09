@@ -327,6 +327,56 @@ public function message(Message $message): void
 }
 ```
 
+### Scheduling events
+You can schedule event dispatch by using `$this->schedule` inside a channel.
+```
+public function message(Message $message): void
+{
+    switch ($message->event) {
+    case 'timer':
+        // ID is for cancellation - IDs must be unique, so we suggest
+        // using something like UUIDs;
+        // Read about cancellation below.
+        $id = Str::uuid();
+        $this->schedule($id, 'ding-dong', 60000, [
+            'message' => 'Time\'s up!',
+        ]);
+        break;
+    case '...':
+        ...
+    }
+}
+```
+
+> [!WARNING]
+> Events sent via `schedule` method **are sent back to the server**!
+> Use `message` method to handle them!
+
+> [!WARNING]
+> Messages triggered via `schedule` won't have `user`!
+
+### Cancelling scheduled events
+You can cancel scheduled event by call `$this->cancel($id)`:
+```
+public function message(Message $message): void
+{
+    switch ($message->event) {
+    case 'stop timer':
+        // You need an ID to cancel the specific scheduled event.
+        // You might want to send the ID to the user,
+        // or store it in Redis, you name it!
+        $id = $message->data['id'];
+        $this->cancel($id);
+        break;
+    case '...':
+        ...
+    }
+}
+```
+> [!INFO]
+> Cancellation of non-existent scheduled, or already emitted events
+> is silently ignored.
+
 ### Connecting to Biosphere channels
 To connect to Biosphere, import and use Biosphere client:
 
