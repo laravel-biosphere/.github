@@ -329,7 +329,7 @@ public function message(Message $message): void
 
 ### Scheduling events
 You can schedule event dispatch by using `$this->schedule` inside a channel.
-```
+```php
 public function message(Message $message): void
 {
     switch ($message->event) {
@@ -357,7 +357,7 @@ public function message(Message $message): void
 
 ### Cancelling scheduled events
 You can cancel scheduled event by call `$this->cancel($id)`:
-```
+```php
 public function message(Message $message): void
 {
     switch ($message->event) {
