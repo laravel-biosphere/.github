@@ -237,7 +237,7 @@ public function message(Message $message): void
 
 ### Sending events
 You can send events from the server. To do so, you can use `$this->send` inside channel class.
-It will send the message to this channel:
+It will send the message to this channel.
 
 `send` method accepts two arguments:
 * An event name to send to this channel;
